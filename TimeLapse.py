@@ -38,41 +38,44 @@ def write_video (vid_writer: VideoWriter, imgs: list) -> None:
     """
     for frame in imgs:
         vid_writer.write (frame)
-    video_obj.release()
+    vid_writer.release()
     print (f"Wrote {len(imgs)} files")
 
+def main():
+    """
+    Main function of this, using this right now so tests can be rune
+    """
+    folder_path = "/Volumes/CaileyHP/Capstone timelapse sample/Test sample 2/*.JPG"
+    files_read = []
+    loaded_imgs = []
+    fourcc = VideoWriter_fourcc('m', 'p', '4', 'v')
+    width, height = 720, 480
 
-folder_path = "/Volumes/CaileyHP/Capstone timelapse sample/Test sample 2/*.JPG"
-files_read = []
-loaded_imgs = []
-fourcc = VideoWriter_fourcc('m', 'p', '4', 'v')
-width, height = 720, 480
+    while True:
+        try:
+            current_files = get_filenames(folder_path)
+            if files_read == []:
+                video_obj = VideoWriter("static/Timelapse.mp4", fourcc, 30, (width, height))
+                loaded_imgs = load_imgs(current_files, loaded_imgs, width, height)
+                write_video(video_obj, loaded_imgs)
+                files_read = current_files
+                print("First time writing")
 
+            if len(current_files) > len(files_read):
+                video_obj = VideoWriter("static/Timelapse.mp4", fourcc, 30, (width, height))
+                new_files = current_files[len(files_read):]
+                loaded_imgs = load_imgs(new_files, loaded_imgs, width, height)
+                write_video(video_obj, loaded_imgs)
+                files_read = files_read + new_files
+                print("Wrote new files")
+            else:
+                print("No new files")
 
-while True:
-    try:
-        current_files = get_filenames(folder_path)
-        if files_read == []:
-            video_obj = VideoWriter("static/Timelapse.mp4", fourcc, 30, (width, height))
-            loaded_imgs = load_imgs(current_files, loaded_imgs, width, height)
-            write_video (video_obj, loaded_imgs)
-            files_read = current_files
-            print("First time writing")
+            if len(current_files) == len(files_read): #This is always true
+                time.sleep(30)
 
-        if len(current_files) > len(files_read):
-            video_obj = VideoWriter("static/Timelapse.mp4", fourcc, 30, (width, height))
-            new_files = current_files[len(files_read):]
-            loaded_imgs = load_imgs (new_files, loaded_imgs, width, height)
-            write_video(video_obj, loaded_imgs)
-            files_read = files_read + new_files
-            print ("Wrote new files")
-        else:
-            print ("No new files")
+        except KeyboardInterrupt:
+            break
 
-        if len(current_files) == len(files_read):
-            time.sleep(30)
-
-    except KeyboardInterrupt:
-        break
-
-#files = get_files("/Volumes/CaileyHP/RIT/Junior/Fall 2020/Scientific Photography/Asgmt5.TimeLapse/*.JPG")
+if __name__=="__main__":
+    main()
