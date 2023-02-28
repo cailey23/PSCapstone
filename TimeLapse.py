@@ -60,7 +60,7 @@ while True:
             current_files = get_filenames(folder_path)
             if files_read == []:
                 video_obj = VideoWriter(temp_video_name, fourcc, 30, (width, height))
-                loaded_imgs = load_imgs(current_files, loaded_imgs, width, height)
+                load_imgs(current_files, loaded_imgs, width, height)
                 write_video (video_obj, loaded_imgs)
                 files_read = current_files
                 print("First time writing")
@@ -69,7 +69,7 @@ while True:
             if len(current_files) > len(files_read):
                 video_obj = VideoWriter(temp_video_name, fourcc, 30, (width, height))
                 new_files = current_files[len(files_read):]
-                loaded_imgs = load_imgs (new_files, loaded_imgs, width, height)
+                load_imgs (new_files, loaded_imgs, width, height)
                 write_video(video_obj, loaded_imgs)
                 files_read = files_read + new_files
                 print ("Wrote new files")
