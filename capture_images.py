@@ -9,6 +9,16 @@ import gphoto2 as gp
 import threading
 
 
+def reconnect():
+    is_connected = False
+    while not is_connected:
+        try:
+            return gp.Camera()
+        except gp.GPhoto2Error as e:
+            if "[-105]" not in str(e):
+                raise e
+
+
 class CaptureImageThread(threading.Thread):
     def __init__(self, image_folder: str, num_images: int, frequency_s: int, image_files: list):
         super().__init__()
@@ -24,16 +34,19 @@ class CaptureImageThread(threading.Thread):
         most_recent_capture_time = 0
         count = 0
         while len(self.image_files) < self.num_images:
-
-            if most_recent_capture_time < time.time() + self.frequency_s:
-                path = camera.capture(gp.GP_CAPTURE_IMAGE)
-                most_recent_capture_time = time.time()
-                camera_file = camera.file_get(path.folder, path.name, gp.GP_FILE_TYPE_NORMAL)
-                image_file=self.image_folder+f"/Image_{time.strftime('%Y_%m_%d_%S')}.jpg"
-                camera_file.save(image_file)
-                camera.file_delete(path.folder, path.name)
-                self.image_files.append(image_file)
-                count += 1
+            try:
+                if most_recent_capture_time < time.time() + self.frequency_s:
+                    path = camera.capture(gp.GP_CAPTURE_IMAGE)
+                    most_recent_capture_time = time.time()
+                    camera_file = camera.file_get(path.folder, path.name, gp.GP_FILE_TYPE_NORMAL)
+                    image_file = self.image_folder + f"/Image_{time.strftime('%Y_%m_%d_%S')}.jpg"
+                    camera_file.save(image_file)
+                    camera.file_delete(path.folder, path.name)
+                    self.image_files.append(image_file)
+                    count += 1
+            except gp.GPhoto2Error as e:
+                print("Camera is disconnected")
+                camera = reconnect()
 
 
 
@@ -100,7 +113,6 @@ if __name__ == "__main__":
     This is an example of calling this 
     Real image capture: 
     """
-    print(gp.gp_library_version(False))
     # Real image capturing: capturing images every 3 seconds for a total of 5 images
     get_images, is_finished = start_capture(3, 5, "SampleImageLocation")
     while not is_finished():
