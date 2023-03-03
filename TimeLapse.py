@@ -3,12 +3,10 @@
 from glob import glob
 from cv2 import VideoWriter, imread, VideoWriter_fourcc, resize
 import time
+import os
 
 #to run shell scripts
 import subprocess
-
-from capture_images import CaptureImageThread, AbstractCamera
-
 
 def get_filenames (filepath: str) -> list:
     """
@@ -45,42 +43,42 @@ def write_video (vid_writer: VideoWriter, imgs: list) -> None:
     print (f"Wrote {len(imgs)} files")
 
 
-folder_path = "/Volumes/CaileyHP/Capstone timelapse sample/Test sample 2/*.JPG"
+folder_path = "/media/pi/T7/Test3/*.jpg"
+temp_video_name = "static/temp.mp4"
+video_name = "static/Timelapse.mp4"
 files_read = []
 loaded_imgs = []
-fourcc = VideoWriter_fourcc('m', 'p', '4', 'v')
+fourcc = VideoWriter_fourcc('L', 'A', 'G', 'S')
 width, height = 720, 480
-current_files = []
-shooting_duration_s = 20
-shooting_interval_s = 2
-capture_image_thread = CaptureImageThread("SampleImages/frame%04d.jpg", shooting_duration_s, shooting_interval_s, current_files)
-#capture_image_thread = AbstractCamera(folder_path,current_files) #uncomment this line to use without having a camera connected
-capture_image_thread.start()
+start_time = time.time()
+timeout = 30 * 60
 
-while capture_image_thread.is_alive():
+while True:
     try:
-        #current_files = get_filenames(folder_path)
-        if files_read == []:
-            video_obj = VideoWriter("static/Timelapse.mp4", fourcc, 30, (width, height))
-            loaded_imgs = load_imgs(current_files, loaded_imgs, width, height)
-            write_video (video_obj, loaded_imgs)
-            files_read = current_files.copy() # .copy is there because of how python handles lists and pointers
-            print("First time writing")
+	if time.time() - start_time >= timeout:
+            start_time = time.time()
+            current_files = get_filenames(folder_path)
+            if files_read == []:
+                video_obj = VideoWriter(temp_video_name, fourcc, 30, (width, height))
+                load_imgs(current_files, loaded_imgs, width, height)
+                write_video (video_obj, loaded_imgs)
+                files_read = current_files
+                print("First time writing")
+                os.rename(temp_video_name, video_name)
 
-        if len(current_files) > len(files_read):
-            video_obj = VideoWriter("static/Timelapse.mp4", fourcc, 30, (width, height))
-            new_files = current_files[len(files_read):]
-            loaded_imgs = load_imgs (new_files, loaded_imgs, width, height)
-            write_video(video_obj, loaded_imgs)
-            files_read = files_read + new_files
-            print ("Wrote new files")
-        else:
-            print ("No new files")
+            if len(current_files) > len(files_read):
+                video_obj = VideoWriter(temp_video_name, fourcc, 30, (width, height))
+                new_files = current_files[len(files_read):]
+                load_imgs (new_files, loaded_imgs, width, height)
+                write_video(video_obj, loaded_imgs)
+                files_read = files_read + new_files
+                print ("Wrote new files")
+                os.rename(temp_video_name, video_name)
+            else:
+                print ("No new files")
 
-        if len(current_files) == len(files_read):
-            time.sleep(30)
 
     except KeyboardInterrupt:
         break
-print(current_files)
+
 #files = get_files("/Volumes/CaileyHP/RIT/Junior/Fall 2020/Scientific Photography/Asgmt5.TimeLapse/*.JPG")
