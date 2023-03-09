@@ -4,6 +4,7 @@ Has a thread for capturing images
 import time
 from datetime import date
 from glob import glob
+import atexit
 
 import gphoto2 as gp
 import threading
@@ -26,28 +27,33 @@ class CaptureImageThread(threading.Thread):
         self.image_folder = image_folder
         self.frequency_s = frequency_s
         self.num_images = num_images
+        self.camera = gp.Camera()
 
-        self.daemon = True  # This sets the thread to end when the main program ends
+        self.daemon = True
 
     def run(self):
-        camera = gp.Camera()
+        atexit.register(self.disconnect)
         most_recent_capture_time = 0
         count = 0
         while len(self.image_files) < self.num_images:
             try:
-                if most_recent_capture_time < time.time() + self.frequency_s:
-                    path = camera.capture(gp.GP_CAPTURE_IMAGE)
+                if most_recent_capture_time + self.frequency_s < time.time():
+                    path = self.camera.capture(gp.GP_CAPTURE_IMAGE)
                     most_recent_capture_time = time.time()
-                    camera_file = camera.file_get(path.folder, path.name, gp.GP_FILE_TYPE_NORMAL)
+                    camera_file = self.camera.file_get(path.folder, path.name, gp.GP_FILE_TYPE_NORMAL)
                     image_file = self.image_folder + f"/Image_{time.strftime('%Y_%m_%d_%S')}.jpg"
                     camera_file.save(image_file)
-                    camera.file_delete(path.folder, path.name)
+                    self.camera.file_delete(path.folder, path.name)
                     self.image_files.append(image_file)
                     count += 1
             except gp.GPhoto2Error as e:
                 print("Camera is disconnected")
-                camera = reconnect()
+                self.camera = reconnect()
 
+    def disconnect(self):
+        print("Thread Exiting")
+        self.camera.exit()
+        print("Camera Disconnected")
 
 
 class AbstractCamera(threading.Thread):
@@ -114,7 +120,7 @@ if __name__ == "__main__":
     Real image capture: 
     """
     # Real image capturing: capturing images every 3 seconds for a total of 5 images
-    get_images, is_finished = start_capture(3, 5, "SampleImageLocation")
+    get_images, is_finished = start_capture(3, 5, "test")
     while not is_finished():
         print(get_images(0))
         time.sleep(5)
@@ -122,6 +128,6 @@ if __name__ == "__main__":
     print(get_images(3))
 
     # Treating folder as capturing
-    get_images = start_abstract_capture("SampleImageLocation/*.jpg")
+    get_images = start_abstract_capture("test/*.jpg")
     time.sleep(1)
     print(get_images(0))
