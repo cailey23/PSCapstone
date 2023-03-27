@@ -275,7 +275,7 @@ class CaptureInterval(tk.Frame):
             VL = int(VLvalue.get())
             FPS = int(videoframerate_cmb.get())
             captureinterval = (EL * 3600 / (VL * 60 * FPS))
-            numberofphotos = (VL * FPS)
+            numberofphotos = (VL * 60* FPS)
             captureinterval_result = ttk.Label(self, text=f"{captureinterval}")
             captureinterval_result.grid(row=5, column=1)
             controller.set_captureinterval_entry(str(captureinterval))
