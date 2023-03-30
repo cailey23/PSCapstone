@@ -1,8 +1,23 @@
+import gphoto2 as gp
 import tkinter as tk
 from tkinter import BOTTOM, TOP, StringVar, ttk
 
-
 class tkinterApp(tk.Tk):
+
+
+    #initialize camera
+    camera = gp.Camera ()
+    camera.init()
+
+    #Get current configuration
+    config = camera.get_config()
+
+    #Get Camera options
+    shutterspeed_setting = config.get_child_by_name('shutterspeed') 
+    aperture_setting = config.get_child_by_name('f-number') 
+    ISO_setting = config.get_child_by_name('iso') 
+    whitebalance_setting = config.get_child_by_name('imagequality').get_child_by_name('whitebalance') 
+
 
     # __init__ function for class tkinterApp
     def __init__(self, *args, **kwargs):
@@ -84,6 +99,7 @@ class StartPage(tk.Frame):
 # Camera Setting Page
 class CameraSettingPage(tk.Frame):
 
+
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         label = ttk.Label(self, text="Camera Setting")
@@ -134,6 +150,23 @@ class CameraSettingPage(tk.Frame):
                               lambda event: controller.set_iso(cameraISO_cmb.get()))
 
         whitebalance_cmb.bind("<<ComboboxSelected>>", lambda event: controller.set_whitebalance(whitebalance_cmb.get()))
+
+        #Set the option values
+        shutterspeed_var = tk.StringVar (value=shutterspeed[0])
+        aperture_var = tk.StringVar (value = aperture[0])
+        iso_var = tk.StringVar (value = cameraISO[0])
+        whitebalance_var = tk.StringVar (value = whitebalance[0])
+
+        shutterspeed_setting.set_value(shutterspeed_var.get())
+        aperture_setting.set_value(aperture_var.get())
+        ISO_setting.set_value(iso_var.get())
+        whitebalance_setting.set(whitebalance_var.get())
+
+        #Save the option changes
+        camera.set_config (config)
+
+
+
         # buttons
         button1 = ttk.Button(self, text="Back",
                              command=lambda: controller.show_frame(StartPage))
@@ -275,7 +308,7 @@ class CaptureInterval(tk.Frame):
             VL = int(VLvalue.get())
             FPS = int(videoframerate_cmb.get())
             captureinterval = (EL * 3600 / (VL * 60 * FPS))
-            numberofphotos = (VL * 60* FPS)
+            numberofphotos = (VL *60* FPS)
             captureinterval_result = ttk.Label(self, text=f"{captureinterval}")
             captureinterval_result.grid(row=5, column=1)
             controller.set_captureinterval_entry(str(captureinterval))
