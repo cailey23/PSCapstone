@@ -20,7 +20,6 @@ def backspace(app):
     widget.delete(len(widget.get()) - 1, "end")
 
 
-
 def create_keyboard(frame, size: int):
     """
     Creates a keyboard used
