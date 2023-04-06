@@ -1,6 +1,7 @@
 import gphoto2 as gp
 import tkinter as tk
 from tkinter import BOTTOM, TOP, StringVar, ttk
+from Timelapse import TimeLapse
 
 class tkinterApp(tk.Tk):
 
@@ -16,7 +17,7 @@ class tkinterApp(tk.Tk):
     shutterspeed_setting = config.get_child_by_name('shutterspeed') 
     aperture_setting = config.get_child_by_name('f-number') 
     ISO_setting = config.get_child_by_name('iso') 
-    whitebalance_setting = config.get_child_by_name('imagequality').get_child_by_name('whitebalance') 
+    #whitebalance_setting = config.get_child_by_name('imagequality').get_child_by_name('whitebalance') 
 
 
     # __init__ function for class tkinterApp
@@ -152,18 +153,18 @@ class CameraSettingPage(tk.Frame):
         whitebalance_cmb.bind("<<ComboboxSelected>>", lambda event: controller.set_whitebalance(whitebalance_cmb.get()))
 
         #Set the option values
-        shutterspeed_var = tk.StringVar (value=shutterspeed[0])
-        aperture_var = tk.StringVar (value = aperture[0])
-        iso_var = tk.StringVar (value = cameraISO[0])
-        whitebalance_var = tk.StringVar (value = whitebalance[0])
+        #shutterspeed_var = tk.StringVar (value=shutterspeed[0])
+        #aperture_var = tk.StringVar (value = aperture[0])
+        #iso_var = tk.StringVar (value = cameraISO[0])
+        #whitebalance_var = tk.StringVar (value = whitebalance[0])
 
-        shutterspeed_setting.set_value(shutterspeed_var.get())
-        aperture_setting.set_value(aperture_var.get())
-        ISO_setting.set_value(iso_var.get())
-        whitebalance_setting.set(whitebalance_var.get())
+        #shutterspeed_setting.set_value(shutterspeed_var.get())
+        #aperture_setting.set_value(aperture_var.get())
+        #ISO_setting.set_value(iso_var.get())
+        #whitebalance_setting.set(whitebalance_var.get())
 
         #Save the option changes
-        camera.set_config (config)
+        #camera.set_config (config)
 
 
 
@@ -392,8 +393,8 @@ class ReviewPage(tk.Frame):
                              command=lambda: controller.show_frame(CalculatorPage))
 
         button3.grid(row=7, column=0, padx=10, pady=10)
-
-        button4 = ttk.Button(self, text="Begin")
+        button4 = ttk.Button(self, text="Begin",
+                             command=TimeLapse)
         button4.grid(row=7, column=5, padx=10, pady=10)
 
 
