@@ -84,17 +84,20 @@ def check_finshed(capture_image_thread):
     return not capture_image_thread.is_alive()
 
 
-def start_capture(frequency_s: int, num_images: int, image_folder: str):
+def start_capture(frequency_s: int, num_images: int, image_folder: str, num_starting_frames: int=90,
+                  starting_image: str= "BrandingStartFrame.JPG"):
     """
     Starts a capture of the image
     @param frequency_s: Wait time between images in seconds
     @param num_images: Number of images to be taken
     @param image_folder: The folder where the images get saved to
+    @param num_starting_frames: number of starting frames that start
+    @param starting_image: frame that is the starting image before
     @returns get_images: function that gets new images with the parameter of the number of images already obtained
     @returns is_finished: function that checks whether the code is still capturing
     """
-    image_files = []
-    image_capture = CaptureImageThread(image_folder, num_images, frequency_s, image_files)
+    image_files = [starting_image] * num_starting_frames
+    image_capture = CaptureImageThread(image_folder, num_images+num_starting_frames, frequency_s, image_files)
     image_capture.start()
 
     return lambda num_image_obtained: get_new_images(image_files, num_image_obtained), lambda: check_finshed(
