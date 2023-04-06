@@ -5,6 +5,7 @@ import os
 import re
 
 from capture_images import start_capture
+from stichvideo import stitch_video
 
 
 def TimeLapse (fps: int = 30, resolution: Tuple[int, int] = (3840, 2160), frequency_s: int = 10,
@@ -25,6 +26,7 @@ def TimeLapse (fps: int = 30, resolution: Tuple[int, int] = (3840, 2160), freque
     num_processed = 0
 
     get_images, is_finished = start_capture(frequency_s=frequency_s, num_images=num_images_to_capture, image_folder=path)
+    videos=[]
 
     while not is_finished():
         # get the list of all the image files in the folder
@@ -37,6 +39,7 @@ def TimeLapse (fps: int = 30, resolution: Tuple[int, int] = (3840, 2160), freque
             continue
 
         output_file = 'output%s.mp4' % j
+        videos.append(output_file)
         # create the video writer object
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
         out = cv2.VideoWriter(output_file, fourcc, fps, resolution)
@@ -60,6 +63,7 @@ def TimeLapse (fps: int = 30, resolution: Tuple[int, int] = (3840, 2160), freque
 
         # Release the video writer object and close all windows
         out.release()
+        stitch_video(video_files=videos, video_output_folder="static")
 
 
         #cv2.destroyAllWindows()

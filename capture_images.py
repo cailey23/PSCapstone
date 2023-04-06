@@ -29,7 +29,7 @@ class CaptureImageThread(threading.Thread):
         self.num_images = num_images
         self.camera = gp.Camera()
 
-        self.daemon = True
+        self.daemon = True  # This sets the thread to end when the main program ends
 
     def run(self):
         atexit.register(self.disconnect)
