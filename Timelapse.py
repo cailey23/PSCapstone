@@ -28,7 +28,7 @@ def TimeLapse (fps: int = 30, resolution: Tuple[int, int] = (3840, 2160), freque
 
     while not is_finished():
         # get the list of all the image files in the folder
-        images = [img for img in os.listdir(path) if img.endswith('.JPG')]
+        images = get_images(0)#[img for img in os.listdir(path) if img.endswith('.JPG')]
 
         # sort the images in ascending order by file name
         images = sorted(images, key=lambda x: int(re.search(r'\d+', x).group()))
