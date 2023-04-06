@@ -1,6 +1,7 @@
 import gphoto2 as gp
 import tkinter as tk
 from tkinter import BOTTOM, TOP, StringVar, ttk
+from Timelapse import TimeLapse
 
 class tkinterApp(tk.Tk):
 
@@ -392,8 +393,8 @@ class ReviewPage(tk.Frame):
                              command=lambda: controller.show_frame(CalculatorPage))
 
         button3.grid(row=7, column=0, padx=10, pady=10)
-
-        button4 = ttk.Button(self, text="Begin")
+        button4 = ttk.Button(self, text="Begin",
+                             command=TimeLapse)
         button4.grid(row=7, column=5, padx=10, pady=10)
 
 
