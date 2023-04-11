@@ -6,18 +6,9 @@ from datetime import date
 from glob import glob
 import atexit
 
-import gphoto2 as gp
 import threading
 
-
-def reconnect():
-    is_connected = False
-    while not is_connected:
-        try:
-            return gp.Camera()
-        except gp.GPhoto2Error as e:
-            if "[-105]" not in str(e):
-                raise e
+from camera_control import capture_image, disconnect_camera
 
 
 class CaptureImageThread(threading.Thread):
@@ -27,7 +18,6 @@ class CaptureImageThread(threading.Thread):
         self.image_folder = image_folder
         self.frequency_s = frequency_s
         self.num_images = num_images
-        self.camera = gp.Camera()
 
         self.daemon = True  # This sets the thread to end when the main program ends
 
@@ -36,24 +26,16 @@ class CaptureImageThread(threading.Thread):
         most_recent_capture_time = 0
         count = 0
         while len(self.image_files) < self.num_images:
-            try:
-                if most_recent_capture_time + self.frequency_s < time.time():
-                    path = self.camera.capture(gp.GP_CAPTURE_IMAGE)
-                    most_recent_capture_time = time.time()
-                    camera_file = self.camera.file_get(path.folder, path.name, gp.GP_FILE_TYPE_NORMAL)
-                    image_file = self.image_folder + f"/Image_{time.strftime('%Y_%m_%d_%S')}.jpg"
-                    camera_file.save(image_file)
-                    self.camera.file_delete(path.folder, path.name)
-                    self.image_files.append(image_file)
-                    count += 1
-            except gp.GPhoto2Error as e:
-                print("Camera is disconnected")
-                self.camera = reconnect()
+            if most_recent_capture_time + self.frequency_s < time.time():
+                most_recent_capture_time = time.time()
+                image_file = self.image_folder + f"/Image_{time.strftime('%Y_%m_%d_%S')}.jpg"
+                capture_image(image_file)
+                self.image_files.append(image_file)
+                count += 1
+
 
     def disconnect(self):
-        print("Thread Exiting")
-        self.camera.exit()
-        print("Camera Disconnected")
+        disconnect_camera()
 
 
 class AbstractCamera(threading.Thread):

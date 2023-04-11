@@ -5,21 +5,6 @@ from Timelapse import TimeLapse
 
 class tkinterApp(tk.Tk):
 
-
-    #initialize camera
-    camera = gp.Camera ()
-    camera.init()
-
-    #Get current configuration
-    config = camera.get_config()
-
-    #Get Camera options
-    shutterspeed_setting = config.get_child_by_name('shutterspeed') 
-    aperture_setting = config.get_child_by_name('f-number') 
-    ISO_setting = config.get_child_by_name('iso') 
-    #whitebalance_setting = config.get_child_by_name('imagequality').get_child_by_name('whitebalance') 
-
-
     # __init__ function for class tkinterApp
     def __init__(self, *args, **kwargs):
         # __init__ function for class Tk
@@ -394,9 +379,8 @@ class ReviewPage(tk.Frame):
 
         button3.grid(row=7, column=0, padx=10, pady=10)
         button4 = ttk.Button(self, text="Begin",
-                             command=TimeLapse)
+                             command= lambda: TimeLapse())
         button4.grid(row=7, column=5, padx=10, pady=10)
-
 
 # Driver Code
 app = tkinterApp()
