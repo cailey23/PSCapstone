@@ -19,6 +19,7 @@ def reconnect():
 
 
 def capture_image(image_file):
+    reconnect()
     global camera
     try:
         path = camera.capture(gp.GP_CAPTURE_IMAGE)
@@ -31,11 +32,13 @@ def capture_image(image_file):
 
 
 def disconnect_camera():
+    reconnect()
     global camera
     camera.exit()
 
 
 def get_settings(*settings: str):
+    reconnect()
     # initialize camera
     global camera
     # Get current configuration
@@ -49,6 +52,7 @@ def get_settings(*settings: str):
 
 
 def set_settings(*settings_values: Tuple[str, object]):
+    reconnect()
     global camera
     config = camera.get_config()
     for setting, value in settings_values:
