@@ -35,7 +35,7 @@ def TimeLapse (fps: int = 30, resolution: Tuple[int, int] = (3840, 2160), freque
         # sort the images in ascending order by file name
         # images = sorted(images, key=lambda x: int(re.search(r'\d+', x).group()))
         # to_process = images[num_processed: num_processed + window]
-        if len (images) != window:
+        if len (images) < window:
             continue
 
         output_file = 'output%s.mp4' % j
@@ -59,7 +59,7 @@ def TimeLapse (fps: int = 30, resolution: Tuple[int, int] = (3840, 2160), freque
             del img
 
         j += 1
-        num_processed += window
+        num_processed += len(images)
 
         # Release the video writer object and close all windows
         out.release()
