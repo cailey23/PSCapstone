@@ -30,12 +30,12 @@ def TimeLapse (fps: int = 30, resolution: Tuple[int, int] = (3840, 2160), freque
 
     while not is_finished():
         # get the list of all the image files in the folder
-        images = get_images(0)#[img for img in os.listdir(path) if img.endswith('.JPG')]
+        images = get_images(num_processed)#[img for img in os.listdir(path) if img.endswith('.JPG')]
 
         # sort the images in ascending order by file name
-        images = sorted(images, key=lambda x: int(re.search(r'\d+', x).group()))
-        to_process = images[num_processed: num_processed + window]
-        if len (to_process) != window:
+        # images = sorted(images, key=lambda x: int(re.search(r'\d+', x).group()))
+        # to_process = images[num_processed: num_processed + window]
+        if len (images) != window:
             continue
 
         output_file = 'output%s.mp4' % j
@@ -45,7 +45,7 @@ def TimeLapse (fps: int = 30, resolution: Tuple[int, int] = (3840, 2160), freque
         out = cv2.VideoWriter(output_file, fourcc, fps, resolution)
 
         # loop through each image and add it to the video writer object
-        for i, image in enumerate (to_process):
+        for i, image in enumerate (images):
             # read the image file
             img = cv2.imread(os.path.join(path, image))
 
