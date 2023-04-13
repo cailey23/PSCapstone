@@ -15,6 +15,7 @@ def reconnect():
             return
         except gp.GPhoto2Error as e:
             print("Camera is not connected")
+            print(e)
             if "[-105]" not in str(e):
                 raise e
 
