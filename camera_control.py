@@ -15,7 +15,6 @@ def reconnect():
             return
         except gp.GPhoto2Error as e:
             print("Camera is not connected")
-            print(e)
             if "[-105]" not in str(e):
                 raise e
 
@@ -58,4 +57,5 @@ def set_settings(*settings_values: Tuple[str, object]):
     global camera
     config = camera.get_config()
     for setting, value in settings_values:
-        config.set_child_by_name(setting, value) #I have no idea if this works
+        setting_val = config.get_child_by_name(setting)
+        setting_val.set_value(value)
