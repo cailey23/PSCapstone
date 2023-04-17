@@ -389,10 +389,10 @@ class ReviewPage(tk.Frame):
         button3.grid(row=7, column=0, padx=10, pady=10)
 
         button4 = ttk.Button(self, text="Begin",
-                             command= lambda: begin_timelapse(frequency_s=int(controller.captureinterval_entry.get().split(" ")[-1]),
-                                                              num_images=int(controller.totalnumberofphotos_result.get().split(" ")[-1]),
+                             command= lambda: begin_timelapse(frequency_s=float(controller.captureinterval_entry.get().split(" ")[-1]),
+                                                              num_images=int(float(controller.totalnumberofphotos_result.get().split(" ")[-1])),
                                                               image_folder="test",
-                                                              fps=int(controller.totalnumberofphotos_result())//int(controller.videolength_result.get().split(" ")[-1]),
+                                                              fps=int(float(controller.totalnumberofphotos_result())/float(controller.videolength_result.get().split(" ")[-1])),
                                                               resolution=(100, 100)))
         button4.grid(row=7, column=5, padx=10, pady=10)
 
