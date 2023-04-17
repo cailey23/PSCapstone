@@ -68,10 +68,10 @@ class tkinterApp(tk.Tk):
         self.whitebalance.set("Whitebalance:  " + value)
 
     def set_videolength(self, value):
-        self.totalnumberofphotos_result.set("Video Length in minutes: " + value)
+        self.videolength_result.set("Video Length in minutes: " + value)
 
     def set_totalnumberofphotos(self, value):
-        self.videolength_result.set("Total Number of Images: " + value)
+        self.totalnumberofphotos_result.set("Total Number of Images: " + value)
 
     def set_captureinterval_entry(self, value):
         self.captureinterval_entry.set("Capture Interval in seconds: " + value)
@@ -389,10 +389,10 @@ class ReviewPage(tk.Frame):
         button3.grid(row=7, column=0, padx=10, pady=10)
 
         button4 = ttk.Button(self, text="Begin",
-                             command= lambda: begin_timelapse(frequency_s=3,
-                                                              num_images=10,
+                             command= lambda: begin_timelapse(frequency_s=int(controller.captureinterval_entry.get().split(" ")[-1]),
+                                                              num_images=int(controller.totalnumberofphotos_result.get().split(" ")[-1]),
                                                               image_folder="test",
-                                                              fps=30,
+                                                              fps=int(controller.totalnumberofphotos_result())//int(controller.videolength_result.get().split(" ")[-1]),
                                                               resolution=(100, 100)))
         button4.grid(row=7, column=5, padx=10, pady=10)
 
