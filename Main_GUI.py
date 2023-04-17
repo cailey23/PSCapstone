@@ -1,6 +1,5 @@
 from typing import Tuple
 
-import gphoto2 as gp
 import tkinter as tk
 from tkinter import BOTTOM, TOP, StringVar, ttk
 from Timelapse import TimeLapse
@@ -392,7 +391,7 @@ class ReviewPage(tk.Frame):
                              command= lambda: begin_timelapse(frequency_s=float(controller.captureinterval_entry.get().split(" ")[-1]),
                                                               num_images=int(float(controller.totalnumberofphotos_result.get().split(" ")[-1])),
                                                               image_folder="test",
-                                                              fps=int(float(controller.totalnumberofphotos_result())/float(controller.videolength_result.get().split(" ")[-1])),
+                                                              fps=float(controller.totalnumberofphotos_result.get().split(" ")[-1])/float(controller.videolength_result.get().split(" ")[-1])/60,
                                                               resolution=(100, 100)))
         button4.grid(row=7, column=5, padx=10, pady=10)
 
