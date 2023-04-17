@@ -1,7 +1,16 @@
+from typing import Tuple
+
 import gphoto2 as gp
 import tkinter as tk
 from tkinter import BOTTOM, TOP, StringVar, ttk
 from Timelapse import TimeLapse
+from capture_images import start_capture
+
+
+def begin_timelapse(frequency_s: int, num_images:int, image_folder:str, fps:int, resolution: Tuple[int,int]):
+    get_images, is_finished = start_capture(frequency_s=frequency_s, num_images=num_images,
+                                            image_folder=image_folder)
+    TimeLapse(get_images, is_finished, fps=fps, resolution=resolution)
 
 class tkinterApp(tk.Tk):
 
@@ -378,8 +387,13 @@ class ReviewPage(tk.Frame):
                              command=lambda: controller.show_frame(CalculatorPage))
 
         button3.grid(row=7, column=0, padx=10, pady=10)
+
         button4 = ttk.Button(self, text="Begin",
-                             command= lambda: TimeLapse())
+                             command= lambda: begin_timelapse(frequency_s=3,
+                                                              num_images=10,
+                                                              image_folder="test",
+                                                              fps=30,
+                                                              resolution=(100, 100)))
         button4.grid(row=7, column=5, padx=10, pady=10)
 
 # Driver Code
