@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter import BOTTOM, TOP, StringVar, ttk
 from Timelapse import TimeLapse
 from capture_images import start_capture
-
+from camera_control import *
 
 def begin_timelapse(frequency_s: int, num_images:int, image_folder:str, fps:int, resolution: Tuple[int,int]):
     get_images, is_finished = start_capture(frequency_s=frequency_s, num_images=num_images,
@@ -55,16 +55,22 @@ class tkinterApp(tk.Tk):
         frame.tkraise()
 
     def set_shutter_speed(self, value):
+        print("change shutterspeed to: " + value)
         self.shutter_speed.set("Shutter Speed: " + value)
+        set_config_entry("shutterspeed", value)
 
     def set_aperture(self, value):
         self.aperture.set("Aperture:         " + value)
+        set_config_entry("f-number", value)
+
 
     def set_iso(self, value):
         self.iso.set("ISO:                  " + value)
+        set_config_entry("iso", value)
 
     def set_whitebalance(self, value):
         self.whitebalance.set("Whitebalance:  " + value)
+        set_config_entry("whitebalance", value)
 
     def set_videolength(self, value):
         self.videolength_result.set("Video Length in minutes: " + value)
