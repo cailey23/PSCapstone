@@ -3,6 +3,9 @@ from typing import List
 from moviepy.editor import VideoFileClip, concatenate_videoclips
 import os
 
+from google_drive import read_data, update_file
+
+
 def stitch_video(video_files: List[str], video_output_folder: str): #video_folder = "file location"):
     # Set the path to the folder containing the video files
 
@@ -25,3 +28,6 @@ def stitch_video(video_files: List[str], video_output_folder: str): #video_folde
 
     # Write the final video file to disk
     final_clip.write_videofile(output_file)
+    data = read_data()
+    file_id = data["File ID"]
+    update_file(file_id, os.path.join(video_output_folder, "merged_video.mp4"))

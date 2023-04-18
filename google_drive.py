@@ -28,12 +28,9 @@ def login():
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
-            creds = flow.run_local_server(port=0)
+        flow = InstalledAppFlow.from_client_secrets_file(
+            'credentials.json', SCOPES)
+        creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open('token.json', 'w') as token:
             token.write(creds.to_json())
@@ -102,7 +99,7 @@ def upload_file(folder_id):
     return file.get('id')
 
 
-def update_file(file_id,folder_id):
+def update_file(file_id, file_name):
     """Update an existing file's metadata and content.
 
     Args:
@@ -127,7 +124,7 @@ def update_file(file_id,folder_id):
                          }
 
         # File's new content.
-        media = MediaFileUpload('static/Timelapse.mp4',
+        media = MediaFileUpload(file_name,
                                 mimetype='video/mp4')
 
         # Send the request to the API.
@@ -154,7 +151,7 @@ def main():
         file_id=upload_file(folder_id)
     else:
         file_id=data["File ID"]
-        update_file(file_id,folder_id)
+        update_file(file_id,"video.mp4")
     if "Folder ID" not in data or "File ID" not in data:
         write_data(folder_id, file_id)
 
