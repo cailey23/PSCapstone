@@ -10,6 +10,7 @@ import threading
 
 from camera_control import capture_image, disconnect_camera
 
+#tests
 
 class CaptureImageThread(threading.Thread):
     def __init__(self, image_folder: str, num_images: int, frequency_s: int, image_files: list):

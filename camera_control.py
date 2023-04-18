@@ -1,5 +1,5 @@
 from typing import Tuple
-
+import time
 import gphoto2 as gp
 
 camera = None #This is currently set using global variables and thus it cannot work with multiple cameras.
@@ -52,10 +52,16 @@ def get_settings(*settings: str):
     return settings_pairs
 
 
-def set_settings(*settings_values: Tuple[str, object]):
-    reconnect()
-    global camera
-    config = camera.get_config()
-    for setting, value in settings_values:
-        setting_val = config.get_child_by_name(setting)
-        setting_val.set_value(value)
+def set_config_entry(entry,value):
+    camera = gp.Camera()
+    cfg = camera.get_config()
+    entry_cfg = cfg.get_child_by_name(entry)
+    #while (entry_cfg.get_value() != value):
+    print ("original is " + entry_cfg.get_value())
+    entry_cfg.set_value(value)
+    print ("new value " + entry_cfg.get_value())
+    #if (entry != "shutterspeed"):
+        #time.sleep (0.5)
+    camera.set_config(cfg)
+    
+

@@ -4,7 +4,7 @@ import tkinter as tk
 from tkinter import BOTTOM, TOP, StringVar, ttk
 from Timelapse import TimeLapse
 from capture_images import start_capture
-
+from camera_control import *
 
 def begin_timelapse(frequency_s: int, num_images:int, image_folder:str, fps:int, resolution: Tuple[int,int]):
     get_images, is_finished = start_capture(frequency_s=frequency_s, num_images=num_images,
@@ -55,16 +55,22 @@ class tkinterApp(tk.Tk):
         frame.tkraise()
 
     def set_shutter_speed(self, value):
+        print("change shutterspeed to: " + value)
         self.shutter_speed.set("Shutter Speed: " + value)
+        set_config_entry("shutterspeed", value)
 
     def set_aperture(self, value):
         self.aperture.set("Aperture:         " + value)
+        set_config_entry("f-number", value)
+
 
     def set_iso(self, value):
         self.iso.set("ISO:                  " + value)
+        set_config_entry("iso", value)
 
     def set_whitebalance(self, value):
         self.whitebalance.set("Whitebalance:  " + value)
+        set_config_entry("whitebalance", value)
 
     def set_videolength(self, value):
         self.videolength_result.set("Video Length in minutes: " + value)
@@ -144,21 +150,6 @@ class CameraSettingPage(tk.Frame):
                               lambda event: controller.set_iso(cameraISO_cmb.get()))
 
         whitebalance_cmb.bind("<<ComboboxSelected>>", lambda event: controller.set_whitebalance(whitebalance_cmb.get()))
-
-        #Set the option values
-        #shutterspeed_var = tk.StringVar (value=shutterspeed[0])
-        #aperture_var = tk.StringVar (value = aperture[0])
-        #iso_var = tk.StringVar (value = cameraISO[0])
-        #whitebalance_var = tk.StringVar (value = whitebalance[0])
-
-        #shutterspeed_setting.set_value(shutterspeed_var.get())
-        #aperture_setting.set_value(aperture_var.get())
-        #ISO_setting.set_value(iso_var.get())
-        #whitebalance_setting.set(whitebalance_var.get())
-
-        #Save the option changes
-        #camera.set_config (config)
-
 
 
         # buttons
