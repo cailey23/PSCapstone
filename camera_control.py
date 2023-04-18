@@ -1,5 +1,4 @@
 from typing import Tuple
-import time
 import gphoto2 as gp
 
 camera = None #This is currently set using global variables and thus it cannot work with multiple cameras.
