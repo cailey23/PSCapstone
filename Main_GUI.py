@@ -151,21 +151,6 @@ class CameraSettingPage(tk.Frame):
 
         whitebalance_cmb.bind("<<ComboboxSelected>>", lambda event: controller.set_whitebalance(whitebalance_cmb.get()))
 
-        #Set the option values
-        #shutterspeed_var = tk.StringVar (value=shutterspeed[0])
-        #aperture_var = tk.StringVar (value = aperture[0])
-        #iso_var = tk.StringVar (value = cameraISO[0])
-        #whitebalance_var = tk.StringVar (value = whitebalance[0])
-
-        #shutterspeed_setting.set_value(shutterspeed_var.get())
-        #aperture_setting.set_value(aperture_var.get())
-        #ISO_setting.set_value(iso_var.get())
-        #whitebalance_setting.set(whitebalance_var.get())
-
-        #Save the option changes
-        #camera.set_config (config)
-
-
 
         # buttons
         button1 = ttk.Button(self, text="Back",
