@@ -383,7 +383,7 @@ class ReviewPage(tk.Frame):
                                                               num_images=int(float(controller.totalnumberofphotos_result.get().split(" ")[-1])),
                                                               image_folder="/media/root/T7/Images",
                                                               fps=float(controller.totalnumberofphotos_result.get().split(" ")[-1])/float(controller.videolength_result.get().split(" ")[-1])/60,
-                                                              resolution=(100, 100)))
+                                                              resolution=(3840, 2160)))
         button4.grid(row=7, column=5, padx=10, pady=10)
 
 # Driver Code
