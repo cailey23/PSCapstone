@@ -18,6 +18,10 @@ class tkinterApp(tk.Tk):
         # __init__ function for class Tk
         tk.Tk.__init__(self, *args, **kwargs)
 
+        #set_config_entry_by_index("expprogram","M")
+        #set_config_entry_by_index("expprogram","P")        
+        #set_config_entry_by_index("expprogram","M")
+        
         self.shutter_speed = tk.StringVar()
         self.aperture = tk.StringVar()
         self.iso = tk.StringVar()
