@@ -18,10 +18,7 @@ class tkinterApp(tk.Tk):
         # __init__ function for class Tk
         tk.Tk.__init__(self, *args, **kwargs)
 
-        set_config_entry_by_index("expprogram","M")
-        set_config_entry_by_index("expprogram","P")        
-        set_config_entry_by_index("expprogram","M")
-        
+
         self.shutter_speed = tk.StringVar()
         self.aperture = tk.StringVar()
         self.iso = tk.StringVar()
@@ -32,7 +29,7 @@ class tkinterApp(tk.Tk):
         self.captureinterval_entry = tk.StringVar()
 
         # creating a container
-        container = tk.Frame(self)
+        container = tk.Frame(self, width=1024, height=600)
         container.grid(row=0,column=0)
         # container.pack(side="top", fill="both", expand=True)
 
@@ -90,14 +87,19 @@ class tkinterApp(tk.Tk):
 class StartPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = ttk.Label(self, text="Welcome")
-        label.pack(side=TOP)
+        label = ttk.Label(self, text="Welcome", font=('Arial',50))
+        label.grid(row=0,column=0,padx=400, pady=100)
 
-        button1 = ttk.Button(self, text="Next",
+        # Create a style for the button
+        style = ttk.Style()
+        style.configure('my.TButton', width=20, height=50)
+
+        button1 = ttk.Button(self, text="Next",style='my.TButton',
                              command=lambda: controller.show_frame(CameraSettingPage))
 
+
         # Button
-        button1.pack(side=BOTTOM)
+        button1.grid(row=1,column=0,pady=100)
 
 
 # Camera Setting Page
@@ -106,46 +108,49 @@ class CameraSettingPage(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = ttk.Label(self, text="Camera Setting")
-        label.grid(row=0, column=2, padx=10, pady=10)
+        label = ttk.Label(self, text="Camera Setting", font=('Arial',40))
+        label.grid(row=0, column=2, padx=20, pady=60)
+        
+        exposuremode = ttk.Label(self,text="Exposure Mode is: " + get_config_entry("expprogram"),font=('Arial',20))
+        exposuremode.grid(row=1,column=2, padx=20)
 
-        shutterspeed = ttk.Label(self, text="Shutter Speed:")
-        shutterspeed.grid(row=1)
-        shutterspeed_course = ["Auto", "1/2", "1/4", "1/8", "1/15", "1/30", "1/60", "1/125", "1/250", "1/500", "1/1000"]
+        shutterspeed = ttk.Label(self, text="Shutter Speed:",font=('Arial',20))
+        shutterspeed.grid(row=2,column=0, padx=20)
+        shutterspeed_course = ["--", "1/2", "1/4", "1/8", "1/15", "1/30", "1/60", "1/125", "1/250", "1/500", "1/1000"]
         shutterspeed_cmb = ttk.Combobox(self, value=shutterspeed_course, width=10)
-        shutterspeed_cmb.grid(row=1, column=1)
+        shutterspeed_cmb.grid(row=2, column=1, padx=20)
 
 
-        aperture = ttk.Label(self, text="Aperture:")
-        aperture.grid(row=2)
-        aperture_course = ["Auto", "1.4", "2", "2.8", "4", "5.6", "8", "11", "16", "22"]
+        aperture = ttk.Label(self, text="Aperture:",font=('Arial',20))
+        aperture.grid(row=3)
+        aperture_course = ["--", "1.4", "2", "2.8", "4", "5.6", "8", "11", "16", "22"]
         aperture_cmb = ttk.Combobox(self, value=aperture_course, width=10)
 
-        shutterspeed_cmb.set('Auto')
-        aperture_cmb.set('Auto')
+        shutterspeed_cmb.set('--')
+        aperture_cmb.set('--')
 
         controller.set_shutter_speed(shutterspeed_cmb.get())
         controller.set_aperture(aperture_cmb.get())
 
 
         shutterspeed_cmb.bind("<<ComboboxSelected>>", lambda event: controller.set_shutter_speed(shutterspeed_cmb.get()))
-        aperture_cmb.grid(row=2, column=1)
+        aperture_cmb.grid(row=3, column=1)
         aperture_cmb.bind("<<ComboboxSelected>>", lambda event: controller.set_aperture(aperture_cmb.get()))
-        cameraISO = ttk.Label(self, text="ISO:")
-        cameraISO.grid(row=3)
-        cameraISO_course = ["Auto", "50", "100", "200", "400", "800", "1600", "3200", "6400"]
+        cameraISO = ttk.Label(self, text="ISO:",font=('Arial',20))
+        cameraISO.grid(row=4)
+        cameraISO_course = ["--","50","100","125","160", "200","250","320","400","500","640","800","1000","1250","1600","2000","2500","3200","4000","5000","6400"]
         cameraISO_cmb = ttk.Combobox(self, value=cameraISO_course, width=10)
-        cameraISO_cmb.grid(row=3, column=1)
+        cameraISO_cmb.grid(row=4, column=1)
 
-        whitebalance = ttk.Label(self, text="White Balance:")
-        whitebalance.grid(row=4)
-        whitebalance_course = ["Auto", "Natural light auto", "Direct sunlight", "Cloudy", "Shade", "Incandescent",
+        whitebalance = ttk.Label(self, text="White Balance:",font=('Arial',20))
+        whitebalance.grid(row=5)
+        whitebalance_course = ["--", "Natural light auto", "Direct sunlight", "Cloudy", "Shade", "Incandescent",
                                "Fluorescent"]
         whitebalance_cmb = ttk.Combobox(self, value=whitebalance_course, width=10)
-        whitebalance_cmb.grid(row=4, column=1)
+        whitebalance_cmb.grid(row=5, column=1)
 
-        cameraISO_cmb.set('Auto')
-        whitebalance_cmb.set('Auto')
+        cameraISO_cmb.set('--')
+        whitebalance_cmb.set('--')
 
         controller.set_iso(cameraISO_cmb.get())
         controller.set_whitebalance(whitebalance_cmb.get())
@@ -160,63 +165,63 @@ class CameraSettingPage(tk.Frame):
         button1 = ttk.Button(self, text="Back",
                              command=lambda: controller.show_frame(StartPage))
 
-        button1.grid(row=7, column=0, padx=10, pady=10)
+        button1.grid(row=10, column=1, padx=10, pady=200)
 
         button2 = ttk.Button(self, text="Next",
                              command=lambda: controller.show_frame(CalculatorPage))
 
-        button2.grid(row=7, column=5, padx=10, pady=10)
+        button2.grid(row=10, column=6, padx=10, pady=200)
 
 
 # Calculator Page
 class CalculatorPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = ttk.Label(self, text="Calculator")
-        label.grid(row=0, column=2, padx=10, pady=10)
+        label = ttk.Label(self, text="Calculator",font=('Arial',40))
+        label.grid(row=0, column=2, padx=30, pady=30)
 
         button1 = ttk.Button(self, text="Calculate Video Length",
                              command=lambda: controller.show_frame(VideoLength))
 
-        button1.grid(row=1, column=1, padx=10, pady=10)
+        button1.grid(row=1, column=1, padx=30, pady=30)
 
         button2 = ttk.Button(self, text="Calculate Capture Interval",
                              command=lambda: controller.show_frame(CaptureInterval))
 
-        button2.grid(row=1, column=4, padx=10, pady=10)
+        button2.grid(row=1, column=4, padx=30, pady=30)
 
         button3 = ttk.Button(self, text="Back",
                              command=lambda: controller.show_frame(CameraSettingPage))
 
-        button3.grid(row=2, column=0, padx=10, pady=10)
+        button3.grid(row=10, column=0, padx=30, pady=250)
 
         button4 = ttk.Button(self, text="Next",
                              command=lambda: controller.show_frame(ReviewPage))
 
-        button4.grid(row=2, column=5, padx=10, pady=10)
+        button4.grid(row=10, column=5, padx=15, pady=250)
 
 
 # Video Length Frame
 class VideoLength(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = ttk.Label(self, text="Video Length Calculator")
+        label = ttk.Label(self, text="Video Length Calculator",font=('Arial',40))
         label.grid(row=0, column=1, padx=10, pady=10)
 
         # Enter Value
-        videoframerate = ttk.Label(self, text="Video Frame Rate:")
-        videoframerate.grid(row=1)
+        videoframerate = ttk.Label(self, text="Video Frame Rate:",font=('Arial',20))
+        videoframerate.grid(row=1,column=0,padx=40)
         videoframerate_course = ["6", "12", "15", "24", "30"]
         videoframerate_cmb = ttk.Combobox(self, value=videoframerate_course, width=30)
         videoframerate_cmb.grid(row=1, column=1)
 
-        eventlength = ttk.Label(self, text="Event Length in hours:")
+        eventlength = ttk.Label(self, text="Event Length in hours:",font=('Arial',20))
         eventlength.grid(row=2)
         ELvalue = StringVar()
         eventlength_entry = ttk.Entry(self, textvariable=ELvalue)
         eventlength_entry.grid(row=2, column=1)
 
-        captureinterval = ttk.Label(self, text="Capture Interval in seconds:")
+        captureinterval = ttk.Label(self, text="Capture Interval in seconds:",font=('Arial',20))
         captureinterval.grid(row=3)
         CIvalue = StringVar()
         captureinterval_entry = ttk.Entry(self, textvariable=CIvalue)
@@ -239,10 +244,10 @@ class VideoLength(tk.Frame):
             controller.set_totalnumberofphotos(str(numberofphotos))
 
         # Result
-        videolength = ttk.Label(self, text="Video Length in minutes:")
+        videolength = ttk.Label(self, text="Video Length in minutes:",font=('Arial',20))
         videolength.grid(row=5)
 
-        imagenumber = ttk.Label(self, text="Total Number of Images:")
+        imagenumber = ttk.Label(self, text="Total Number of Images:",font=('Arial',20))
         imagenumber.grid(row=6)
         # Tab1_labelresult2= Label(text=f"{numberofphotos}")
 
@@ -268,23 +273,23 @@ class VideoLength(tk.Frame):
 class CaptureInterval(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = ttk.Label(self, text="Capture Interval Calculator")
+        label = ttk.Label(self, text="Capture Interval Calculator",font=('Arial',40))
         label.grid(row=0, column=1, padx=10, pady=10)
 
         # Enter Value
-        videoframerate = ttk.Label(self, text="Video Frame Rate:")
+        videoframerate = ttk.Label(self, text="Video Frame Rate:",font=('Arial',20))
         videoframerate.grid(row=1)
         videoframerate_course = ["6", "12", "15", "24", "30"]
         videoframerate_cmb = ttk.Combobox(self, value=videoframerate_course, width=30)
         videoframerate_cmb.grid(row=1, column=1)
 
-        eventlength = ttk.Label(self, text="Event Length in hours:")
+        eventlength = ttk.Label(self, text="Event Length in hours:",font=('Arial',20))
         eventlength.grid(row=2)
         ELvalue = StringVar()
         eventlength_entry = ttk.Entry(self, textvariable=ELvalue)
         eventlength_entry.grid(row=2, column=1)
 
-        videolength = ttk.Label(self, text="Video Length in minutes:")
+        videolength = ttk.Label(self, text="Video Length in minutes:",font=('Arial',20))
         videolength.grid(row=3)
         VLvalue = StringVar()
         videolength_entry = ttk.Entry(self, textvariable=VLvalue)
@@ -306,10 +311,10 @@ class CaptureInterval(tk.Frame):
             controller.set_totalnumberofphotos(str(numberofphotos))
 
         # Result
-        captureinterval = ttk.Label(self, text="Capture Interval in seconds:")
+        captureinterval = ttk.Label(self, text="Capture Interval in seconds:",font=('Arial',20))
         captureinterval.grid(row=5)
 
-        imagenumber = ttk.Label(self, text="Total Number of Images:")
+        imagenumber = ttk.Label(self, text="Total Number of Images:",font=('Arial',20))
         imagenumber.grid(row=6)
 
         # Button
@@ -333,54 +338,54 @@ class CaptureInterval(tk.Frame):
 class ReviewPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        title = ttk.Label(self, text="Review")
-        title.grid(row=0, column=2, padx=10, pady=10)
-        lowertitle1 = ttk.Label(self, text="Camera Settings")
-        lowertitle1.grid(row=1, column=0, padx=10, pady=10)
-        lowertitle2 = ttk.Label(self, text="Time Lapse Settings")
-        lowertitle2.grid(row=1, column=4, padx=10, pady=10)
+        title = ttk.Label(self, text="Review",font=('Arial',40))
+        title.grid(row=0, column=2, padx=30, pady=10)
+        lowertitle1 = ttk.Label(self, text="Camera Settings",font=('Arial',30))
+        lowertitle1.grid(row=2, column=0, padx=10, pady=10)
+        lowertitle2 = ttk.Label(self, text="Time Lapse Settings",font=('Arial',30))
+        lowertitle2.grid(row=2, column=4, padx=10, pady=10)
 
         # Review Camera Settings
-        shutterspeed = ttk.Label(self, textvariable=controller.shutter_speed)
-        shutterspeed.grid(row=2)
+        shutterspeed = ttk.Label(self, textvariable=controller.shutter_speed,font=('Arial',20))
+        shutterspeed.grid(row=3)
 
-        aperture = ttk.Label(self, textvariable=controller.aperture)
-        aperture.grid(row=3)
+        aperture = ttk.Label(self, textvariable=controller.aperture,font=('Arial',20))
+        aperture.grid(row=4)
 
-        cameraISO = ttk.Label(self, textvariable=controller.iso)
-        cameraISO.grid(row=4)
+        cameraISO = ttk.Label(self, textvariable=controller.iso,font=('Arial',20))
+        cameraISO.grid(row=5)
 
-        whitebalance = ttk.Label(self, textvariable=controller.whitebalance)
-        whitebalance.grid(row=5)
+        whitebalance = ttk.Label(self, textvariable=controller.whitebalance,font=('Arial',20))
+        whitebalance.grid(row=6)
 
         # Review Calculator Results
         # captureinterval = ttk.Label(self, text="Capture Interval in seconds:")
-        captureinterval = ttk.Label(self, textvariable=controller.captureinterval_entry)
-        captureinterval.grid(row=2, column=4)
+        captureinterval = ttk.Label(self, textvariable=controller.captureinterval_entry,font=('Arial',20))
+        captureinterval.grid(row=3, column=4)
 
         # numberofimage = ttk.Label(self, text="Total Number of Images:")
-        numberofimage = ttk.Label(self, textvariable=controller.totalnumberofphotos_result)
-        numberofimage.grid(row=3, column=4)
+        numberofimage = ttk.Label(self, textvariable=controller.totalnumberofphotos_result,font=('Arial',20))
+        numberofimage.grid(row=4, column=4)
 
         # videolength = ttk.Label(self, text="Video Length in minutes")
-        videolength = ttk.Label(self, textvariable=controller.videolength_result)
-        videolength.grid(row=4, column=4)
+        videolength = ttk.Label(self, textvariable=controller.videolength_result,font=('Arial',20))
+        videolength.grid(row=5, column=4)
 
         # Buttons
         button1 = ttk.Button(self, text="Edit",
                              command=lambda: controller.show_frame(CameraSettingPage))
 
-        button1.grid(row=6, column=1, padx=10, pady=10)
+        button1.grid(row=8, column=1, padx=10, pady=60)
 
         button2 = ttk.Button(self, text="Edit",
                              command=lambda: controller.show_frame(CalculatorPage))
 
-        button2.grid(row=6, column=4, padx=10, pady=10)
+        button2.grid(row=8, column=4, padx=10, pady=60)
 
         button3 = ttk.Button(self, text="Back",
                              command=lambda: controller.show_frame(CalculatorPage))
 
-        button3.grid(row=7, column=0, padx=10, pady=10)
+        button3.grid(row=11, column=0, padx=10, pady=60)
 
         button4 = ttk.Button(self, text="Begin",
                              command= lambda: begin_timelapse(frequency_s=float(controller.captureinterval_entry.get().split(" ")[-1]),
@@ -388,9 +393,10 @@ class ReviewPage(tk.Frame):
                                                               image_folder="/media/root/T7/Images",
                                                               fps=float(controller.totalnumberofphotos_result.get().split(" ")[-1])/float(controller.videolength_result.get().split(" ")[-1])/60,
                                                               resolution=(3840, 2160)))
-        button4.grid(row=7, column=5, padx=10, pady=10)
+        button4.grid(row=11, column=5, padx=10, pady=60)
 
 # Driver Code
 app = tkinterApp()
+app.geometry("1024x600")
 app.title("TimeLapse")
 app.mainloop()
