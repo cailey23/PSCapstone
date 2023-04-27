@@ -52,21 +52,34 @@ def get_settings(*settings: str):
 
 
 def set_config_entry(entry,value):
-    camera = gp.Camera()
-    cfg = camera.get_config()
-    entry_cfg = cfg.get_child_by_name(entry)
-    entry_cfg.set_value(value)
-    camera.set_config(cfg)
-    
-def set_config_entry_by_index(entry,value):
-    print ("changing " + entry + " to " + value)
+#    print ("changing " + entry + " to " + value)
     camera = gp.Camera()
     cfg = camera.get_config()
     entry_cfg = cfg.get_child_by_name(entry)
     #while (entry_cfg.get_value() != value):
-    print ("original is " + entry_cfg.get_value())
+#    print ("original is " + entry_cfg.get_value())
     entry_cfg.set_value(value)
-    print ("new value " + entry_cfg.get_value())
+#    print ("new value " + entry_cfg.get_value())
     if (entry != "shutterspeed"):
         time.sleep (0.5)
     camera.set_config(cfg)
+    
+def set_config_entry_by_index(entry,value):
+#    print ("changing " + entry + " to " + value)
+    camera = gp.Camera()
+    cfg = camera.get_config()
+    entry_cfg = cfg.get_child_by_name(entry)
+    #while (entry_cfg.get_value() != value):
+#    print ("original is " + entry_cfg.get_value())
+    entry_cfg.set_value(value)
+#    print ("new value " + entry_cfg.get_value())
+    if (entry != "shutterspeed"):
+        time.sleep (0.5)
+    camera.set_config(cfg)
+
+def get_config_entry (entry):
+    camera = gp.Camera()
+    cfg = camera.get_config()
+    entry_cfg = cfg.get_child_by_name(entry)
+
+    return entry_cfg.get_value()
