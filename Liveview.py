@@ -1,6 +1,6 @@
 import cv2 as cv2
 
-Liveview=cv2.VideoCapture (1)
+Liveview=cv2.VideoCapture (0)
 
 while True:
     ret,frame=Liveview.read()
