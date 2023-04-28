@@ -165,33 +165,36 @@ class CameraSettingPage(tk.Frame):
             # Open the image file using PIL
             image = Image.open("captured_image.jpg")
 
+            # Resize the image to a width of 300 pixels while preserving aspect ratio
+            width, height = image.size
+            aspect_ratio = height / width
+            resized_width = 300
+            resized_height = int(resized_width * aspect_ratio)
+            resized_image = image.resize((resized_width, resized_height), Image.ANTIALIAS)
+
             # Convert the PIL image into a Tkinter-compatible PhotoImage object
-            photo = ImageTk.PhotoImage(image)
+            photo = ImageTk.PhotoImage(resized_image)
 
             # Create a Tkinter label and display the PhotoImage
             preview_label = ttk.Label(self, image=photo)
-            preview_label.grid(row=4, column=2)         
+            preview_label.image = photo
+            preview_label.grid(row=1, column=4)         
 
         # buttons
         button1 = ttk.Button(self, text="Back",
                              command=lambda: controller.show_frame(StartPage))
 
-        button1.grid(row=10, column=1, padx=10, pady=200)
+        button1.grid(row=6, column=1, padx=10, pady=30)
 
         button2 = ttk.Button(self, text="Next",
                              command=lambda: controller.show_frame(CalculatorPage))
 
-        button2.grid(row=10, column=6, padx=10, pady=200)
+        button2.grid(row=6, column=5, padx=10, pady=30)
 
         button3 = ttk.Button(self, text="Capture Preview Image",
                              command=lambda: [capture_preview_image(),display_preview_image()])
 
         button3.grid(row=3, column=2)
-
-        button4 = ttk.Button(self, text="Display Preview Image",
-                             command=lambda: display_preview_image())
-
-        button4.grid(row=4, column=2)
 
 # Calculator Page
 class CalculatorPage(tk.Frame):
