@@ -29,7 +29,7 @@ class tkinterApp(tk.Tk):
         self.captureinterval_entry = tk.StringVar()
 
         # creating a container
-        container = tk.Frame(self, width=960, height=500)
+        container = tk.Frame(self, width=1000, height=570)
         container.grid(row=0,column=0)
         # container.pack(side="top", fill="both", expand=True)
 
@@ -397,6 +397,6 @@ class ReviewPage(tk.Frame):
 
 # Driver Code
 app = tkinterApp()
-app.geometry("960x500")
+app.geometry("1000x570")
 app.title("TimeLapse")
 app.mainloop()
