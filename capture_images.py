@@ -29,7 +29,7 @@ class CaptureImageThread(threading.Thread):
         while len(self.image_files) < self.num_images:
             if most_recent_capture_time + self.frequency_s < time.time():
                 most_recent_capture_time = time.time()
-                image_file = self.image_folder + f"/Image_{time.strftime('%Y_%m_%d_%S')}.jpg"
+                image_file = self.image_folder + f"/Image_{time.strftime('%Y_%m_%d_%H_%M_%S')}.jpg"
                 capture_image(image_file)
                 self.image_files.append(image_file)
                 count += 1

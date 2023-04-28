@@ -1,11 +1,7 @@
-import time
-import unittest
 
-import requests
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 
 
 
@@ -23,5 +19,4 @@ def upload_video(video_name):
     files.send_keys([video_name])
     submit.click()
     # elem.send_keys('seleniumhq' + Keys.RETURN)
-    time.sleep(30)
     browser.quit()
