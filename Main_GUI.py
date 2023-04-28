@@ -118,13 +118,13 @@ class CameraSettingPage(tk.Frame):
 
         shutterspeed = ttk.Label(self, text="Shutter Speed:",font=('Arial',15))
         shutterspeed.grid(row=2,column=0, padx=20)
-        shutterspeed_course = ["--", "1/2", "1/4", "1/8", "1/15", "1/30", "1/60", "1/125", "1/250", "1/500", "1/1000"]
+        shutterspeed_course = ["--","1/1.6","1/2","1/2.5","1/3","1/4","1/5","1/6","1/8","1/10","1/13","1/15","1/20","1/25","1/30","1/40","1/50","1/60","1/80","1/100","1/125","1/160","1/200","1/250","1/320","1/400","1/500","1/640","1/800","1/1000","1/1250","1/1600","1/2000","1/2500","1/3200","1/4000","1/5000","1/6400","1/8000"]
         shutterspeed_cmb = ttk.Combobox(self, value=shutterspeed_course, width=10)
         shutterspeed_cmb.grid(row=2, column=1, padx=20)
 
         aperture = ttk.Label(self, text="Aperture:",font=('Arial',15))
         aperture.grid(row=3)
-        aperture_course = ["--", "1.4", "2", "2.8", "4", "5.6", "8", "11", "16", "22"]
+        aperture_course = ["--", "1.4", "2", "2.8", "4","4.5", "5.6","6.3","7.1", "8", "9","10","11","13","14", "16","18","20","22"]
         aperture_cmb = ttk.Combobox(self, value=aperture_course, width=10)
 
         shutterspeed_cmb.set('--')
@@ -138,7 +138,7 @@ class CameraSettingPage(tk.Frame):
         aperture_cmb.bind("<<ComboboxSelected>>", lambda event: controller.set_aperture(aperture_cmb.get()))
         cameraISO = ttk.Label(self, text="ISO:",font=('Arial',15))
         cameraISO.grid(row=4)
-        cameraISO_course = ["--","50","100","125","160", "200","250","320","400","500","640","800","1000","1250","1600","2000","2500","3200","4000","5000","6400"]
+        cameraISO_course = ["--","100","125","160", "200","250","320","400","500","640","800","1000","1250","1600","2000","2500","3200","4000","5000","6400","8000","10000","12800"]
         cameraISO_cmb = ttk.Combobox(self, value=cameraISO_course, width=10)
         cameraISO_cmb.grid(row=4, column=1)
 
