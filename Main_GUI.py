@@ -58,7 +58,6 @@ class tkinterApp(tk.Tk):
         frame.tkraise()
 
     def set_shutter_speed(self, value):
-        print("change shutterspeed to: " + value)
         self.shutter_speed.set("Shutter Speed: " + value)
         set_config_entry("shutterspeed", value)
 
