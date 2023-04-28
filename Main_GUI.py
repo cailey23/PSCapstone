@@ -341,9 +341,9 @@ class ReviewPage(tk.Frame):
         title = ttk.Label(self, text="Review",font=('Arial',35))
         title.grid(row=0, column=2, padx=30, pady=10)
         lowertitle1 = ttk.Label(self, text="Camera Settings",font=('Arial',25))
-        lowertitle1.grid(row=2, column=0, padx=10, pady=10)
+        lowertitle1.grid(row=2, column=0, padx=7, pady=10)
         lowertitle2 = ttk.Label(self, text="Time Lapse Settings",font=('Arial',25))
-        lowertitle2.grid(row=2, column=4, padx=10, pady=10)
+        lowertitle2.grid(row=2, column=4, padx=7, pady=10)
 
         # Review Camera Settings
         shutterspeed = ttk.Label(self, textvariable=controller.shutter_speed,font=('Arial',15))
@@ -375,17 +375,17 @@ class ReviewPage(tk.Frame):
         button1 = ttk.Button(self, text="Edit",
                              command=lambda: controller.show_frame(CameraSettingPage))
 
-        button1.grid(row=8, column=1, padx=10, pady=60)
+        button1.grid(row=8, column=1, padx=7, pady=60)
 
         button2 = ttk.Button(self, text="Edit",
                              command=lambda: controller.show_frame(CalculatorPage))
 
-        button2.grid(row=8, column=4, padx=10, pady=60)
+        button2.grid(row=8, column=4, padx=7, pady=60)
 
         button3 = ttk.Button(self, text="Back",
                              command=lambda: controller.show_frame(CalculatorPage))
 
-        button3.grid(row=11, column=0, padx=10, pady=60)
+        button3.grid(row=11, column=0, padx=7, pady=60)
 
         button4 = ttk.Button(self, text="Begin",
                              command= lambda: begin_timelapse(frequency_s=float(controller.captureinterval_entry.get().split(" ")[-1]),
@@ -393,7 +393,7 @@ class ReviewPage(tk.Frame):
                                                               image_folder="/media/root/T7/Images",
                                                               fps=float(controller.totalnumberofphotos_result.get().split(" ")[-1])/float(controller.videolength_result.get().split(" ")[-1])/60,
                                                               resolution=(3840, 2160)))
-        button4.grid(row=11, column=5, padx=10, pady=60)
+        button4.grid(row=11, column=5, padx=7, pady=60)
 
 # Driver Code
 app = tkinterApp()
