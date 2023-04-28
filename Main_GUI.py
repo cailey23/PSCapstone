@@ -1,7 +1,7 @@
 from typing import Tuple
 import tkinter as tk
 from tkinter import BOTTOM, TOP, StringVar, ttk
-#from Timelapse import TimeLapse
+from Timelapse import TimeLapse
 from capture_images import start_capture
 from camera_control import *
 from PIL import Image,ImageTk
@@ -189,7 +189,7 @@ class CameraSettingPage(tk.Frame):
         button2 = ttk.Button(self, text="Next",
                              command=lambda: controller.show_frame(CalculatorPage))
 
-        button2.grid(row=6, column=5, padx=10, pady=30)
+        button2.grid(row=6, column=2, padx=10, pady=30)
 
         button3 = ttk.Button(self, text="Capture Preview Image",
                              command=lambda: [capture_preview_image(),display_preview_image()])
