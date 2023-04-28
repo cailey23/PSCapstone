@@ -1,10 +1,11 @@
 from typing import Tuple
-
 import tkinter as tk
 from tkinter import BOTTOM, TOP, StringVar, ttk
-from Timelapse import TimeLapse
+#from Timelapse import TimeLapse
 from capture_images import start_capture
 from camera_control import *
+from PIL import Image,ImageTk
+from capture_test_image import *
 
 def begin_timelapse(frequency_s: int, num_images:int, image_folder:str, fps:int, resolution: Tuple[int,int]):
     get_images, is_finished = start_capture(frequency_s=frequency_s, num_images=num_images,
@@ -172,6 +173,11 @@ class CameraSettingPage(tk.Frame):
 
         button2.grid(row=10, column=6, padx=10, pady=200)
 
+        button3 = ttk.Button(self, text="Capture Preview Image",
+                             command=lambda: capture_preview_image())
+
+        button3.grid(row=3, column=2)
+
 
 # Calculator Page
 class CalculatorPage(tk.Frame):
@@ -234,7 +240,7 @@ class VideoLength(tk.Frame):
             CI = int(CIvalue.get())
             FPS = int(videoframerate_cmb.get())
             videolength = (EL * 3600 / (FPS * CI))
-            videolength_in_min = (videolength / 60)
+            videolength_in_min = round(videolength / 60, 2)
             numberofphotos = (videolength * FPS)
             videolength_result = ttk.Label(self, text=f"{videolength_in_min}")
             videolength_result.grid(row=5, column=1)
@@ -301,7 +307,7 @@ class CaptureInterval(tk.Frame):
             EL = int(ELvalue.get())
             VL = int(VLvalue.get())
             FPS = int(videoframerate_cmb.get())
-            captureinterval = (EL * 3600 / (VL * 60 * FPS))
+            captureinterval = round(EL * 3600 / (VL * 60 * FPS))
             numberofphotos = (VL *60* FPS)
             captureinterval_result = ttk.Label(self, text=f"{captureinterval}")
             captureinterval_result.grid(row=5, column=1)
