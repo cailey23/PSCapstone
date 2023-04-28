@@ -19,7 +19,6 @@ class tkinterApp(tk.Tk):
         # __init__ function for class Tk
         tk.Tk.__init__(self, *args, **kwargs)
 
-
         self.shutter_speed = tk.StringVar()
         self.aperture = tk.StringVar()
         self.iso = tk.StringVar()
@@ -28,6 +27,8 @@ class tkinterApp(tk.Tk):
         self.videolength_result = tk.StringVar()
         self.totalnumberofphotos_result = tk.StringVar()
         self.captureinterval_entry = tk.StringVar()
+
+        self.show_preview_image_flag = False
 
         # creating a container
         container = tk.Frame(self, width=1024, height=570)
@@ -82,7 +83,9 @@ class tkinterApp(tk.Tk):
 
     def set_captureinterval_entry(self, value):
         self.captureinterval_entry.set("Capture Interval in seconds: " + value)
-
+    
+    def show_preview_image_flag(self):
+        self.show_preview_image_flag = True
 
 # Startpage
 class StartPage(tk.Frame):
@@ -106,7 +109,6 @@ class StartPage(tk.Frame):
 # Camera Setting Page
 class CameraSettingPage(tk.Frame):
 
-
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         label = ttk.Label(self, text="Camera Setting", font=('Arial',35))
@@ -121,7 +123,6 @@ class CameraSettingPage(tk.Frame):
         shutterspeed_cmb = ttk.Combobox(self, value=shutterspeed_course, width=10)
         shutterspeed_cmb.grid(row=2, column=1, padx=20)
 
-
         aperture = ttk.Label(self, text="Aperture:",font=('Arial',15))
         aperture.grid(row=3)
         aperture_course = ["--", "1.4", "2", "2.8", "4", "5.6", "8", "11", "16", "22"]
@@ -132,7 +133,6 @@ class CameraSettingPage(tk.Frame):
 
         controller.set_shutter_speed(shutterspeed_cmb.get())
         controller.set_aperture(aperture_cmb.get())
-
 
         shutterspeed_cmb.bind("<<ComboboxSelected>>", lambda event: controller.set_shutter_speed(shutterspeed_cmb.get()))
         aperture_cmb.grid(row=3, column=1)
@@ -161,6 +161,16 @@ class CameraSettingPage(tk.Frame):
 
         whitebalance_cmb.bind("<<ComboboxSelected>>", lambda event: controller.set_whitebalance(whitebalance_cmb.get()))
 
+        def display_preview_image():
+            # Open the image file using PIL
+            image = Image.open("captured_image.jpg")
+
+            # Convert the PIL image into a Tkinter-compatible PhotoImage object
+            photo = ImageTk.PhotoImage(image)
+
+            # Create a Tkinter label and display the PhotoImage
+            preview_label = ttk.Label(self, image=photo)
+            preview_label.grid(row=4, column=2)         
 
         # buttons
         button1 = ttk.Button(self, text="Back",
@@ -174,10 +184,14 @@ class CameraSettingPage(tk.Frame):
         button2.grid(row=10, column=6, padx=10, pady=200)
 
         button3 = ttk.Button(self, text="Capture Preview Image",
-                             command=lambda: capture_preview_image())
+                             command=lambda: [capture_preview_image(),display_preview_image()])
 
         button3.grid(row=3, column=2)
 
+        button4 = ttk.Button(self, text="Display Preview Image",
+                             command=lambda: display_preview_image())
+
+        button4.grid(row=4, column=2)
 
 # Calculator Page
 class CalculatorPage(tk.Frame):
