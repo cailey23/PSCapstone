@@ -4,7 +4,7 @@ import cv2
 import os
 import re
 
-from capture_images import start_capture
+from capture_images import start_capture, start_abstract_capture
 from stichvideo import stitch_video
 
 
@@ -47,7 +47,10 @@ def TimeLapse(get_images: staticmethod, is_finished: staticmethod, fps: int = 30
             img = cv2.imread(image)
 
             # resize the image to match the output resolution
-            img = cv2.resize(img, resolution)
+            try:
+                img = cv2.resize(img, resolution)
+            except Exception as e:
+                break
 
             # write the image to the video
             out.write(img)
@@ -63,3 +66,7 @@ def TimeLapse(get_images: staticmethod, is_finished: staticmethod, fps: int = 30
         stitch_video(video_files=videos, video_output_folder="static")
 
         # cv2.destroyAllWindows()
+
+if __name__=="__main__":
+    get_images = start_abstract_capture("SomeFolderHere/*.jpg")
+    TimeLapse(get_images, lambda: False)

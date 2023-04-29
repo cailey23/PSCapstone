@@ -105,15 +105,15 @@ if __name__ == "__main__":
     This is an example of calling this 
     Real image capture: 
     """
-    # Real image capturing: capturing images every 3 seconds for a total of 5 images
+    """# Real image capturing: capturing images every 3 seconds for a total of 5 images
     get_images, is_finished = start_capture(3, 5, "test")
     while not is_finished():
         print(get_images(0))
         time.sleep(5)
     print(get_images(0))
-    print(get_images(3))
+    print(get_images(3))"""
 
     # Treating folder as capturing
-    get_images = start_abstract_capture("test/*.jpg")
+    get_images = start_abstract_capture("Image_2023_04_29_*")
     time.sleep(1)
     print(get_images(0))

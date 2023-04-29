@@ -30,7 +30,14 @@ def stitch_video(video_files: List[str], video_output_folder: str): #video_folde
     # Write the final video file to disk
     final_clip.write_videofile(output_file)
 
-    #data = read_data()
-    #file_id = data["File ID"]
-    #update_file(file_id, os.path.join(video_output_folder, "merged_video.mp4"))
-    upload_video(os.path.join(video_output_folder, "merged_video.mp4"))
+
+    try:
+        upload_video(os.path.join(video_output_folder, "merged_video.mp4"))
+    except Exception as e:
+        pass
+
+    """try: #This is for uploading to a google drive rather than the website
+        data = read_data()
+        file_id = data["File ID"]
+        update_file(file_id, os.path.join(video_output_folder, "merged_video.mp4"))
+    """
